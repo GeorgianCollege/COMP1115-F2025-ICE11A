@@ -226,5 +226,71 @@ namespace ICE11A
             writer.Write(Settings.Default.Career ?? "");
         }
 
+        public static bool LoadCharacterBinary(string path)
+        {
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    throw new FileNotFoundException("Character File does not exist");
+                }
+
+                FileInfo info = new FileInfo(path);
+                if (info.Length == 0)
+                {
+                    throw new FileFormatException("Character file is empty");
+                }
+
+                CharacterData characterData;
+                FileStream fileStream = new FileStream(path, FileMode.Open);
+                using BinaryReader reader = new BinaryReader(fileStream);
+
+                characterData.AGL = reader.ReadString();
+                characterData.STR = reader.ReadString();
+                characterData.VGR = reader.ReadString();
+                characterData.PER = reader.ReadString();
+                characterData.INT = reader.ReadString();
+                characterData.WIL = reader.ReadString();
+                characterData.CharacterName = reader.ReadString();
+                characterData.Species = reader.ReadString();
+                characterData.Career = reader.ReadString();
+
+                if (characterData.AGL == null || characterData.STR == null || characterData.VGR == null ||
+                    characterData.PER == null || characterData.INT == null || characterData.WIL == null ||
+                    characterData.CharacterName == null || characterData.Species == null ||
+                    characterData.Career == null)
+                {
+                    throw new FileFormatException("Invalid Character file");
+                }
+                Settings.Default.AGL = characterData.AGL;
+                Settings.Default.STR = characterData.STR;
+                Settings.Default.VGR = characterData.VGR;
+                Settings.Default.PER = characterData.PER;
+                Settings.Default.INT = characterData.INT;
+                Settings.Default.WIL = characterData.WIL;
+                Settings.Default.CharacterName = characterData.CharacterName;
+                Settings.Default.Species = characterData.Species;
+                Settings.Default.Career = characterData.Career;
+
+                return true;
+            }
+            catch (FileNotFoundException e)
+            {
+                ShowToast("File Not Found: " + e.Message, ToastType.Danger);
+                return false;
+            }
+            catch (FileFormatException e)
+            {
+                ShowToast("Format Error: " + e.Message, ToastType.Danger);
+                return false;
+            }
+            catch (Exception e)
+            {
+                ShowToast("Error: " + e.Message, ToastType.Danger);
+                return false;
+            }
+        }
+
+
     }
 }
