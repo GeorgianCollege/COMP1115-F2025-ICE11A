@@ -20,6 +20,20 @@ namespace ICE11A
             Info
         }
 
+        public struct CharacterData
+        {
+            public string AGL;
+            public string STR;
+            public string VGR;
+            public string PER;
+            public string INT;
+            public string WIL;
+            public string CharacterName;
+            public string Species;
+            public string Career;
+        }
+
+
     internal static class Program
     {
         public static SplashForm SplashForm;
