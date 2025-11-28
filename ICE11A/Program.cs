@@ -79,6 +79,10 @@ namespace ICE11A
             Application.Run(SplashForm);
         }
 
+        /// <summary>
+        /// This method confirms exit with the user.
+        /// </summary>
+        /// <param name="e"></param>
         public static void ConfirmExit(FormClosingEventArgs e)
         {
             if (IsExiting)
@@ -98,6 +102,10 @@ namespace ICE11A
             }
         }
 
+        /// <summary>
+        ///  This method saves character data to a text file.
+        /// </summary>
+        /// <param name="path"></param>
         public static void SaveCharacter(string path)
         {
             using StreamWriter writer = new StreamWriter(path);
@@ -113,6 +121,10 @@ namespace ICE11A
             writer.WriteLine(Settings.Default.Career);
         }
 
+        /// <summary>
+        /// This method loads character data from a text file.
+        /// </summary>
+        /// <param name="path"></param>
         public static void LoadCharacter(string path)
         {
 
@@ -188,6 +200,11 @@ namespace ICE11A
             }
         }
 
+        /// <summary>
+        /// This method shows a toast notification.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="type"></param>
         public static void ShowToast(string message, ToastType type = ToastType.Success)
         {
             const int padding = 20;
@@ -207,6 +224,10 @@ namespace ICE11A
             toast.Show(Form.ActiveForm);
         }
 
+        /// <summary>
+        /// This method saves character data to a binary file.
+        /// </summary>
+        /// <param name="path"></param>
         public static void SaveCharacterBinary(string path)
         {
             // Create or overwrite the file
@@ -227,6 +248,11 @@ namespace ICE11A
             writer.Write(Settings.Default.Career ?? "");
         }
 
+        /// <summary>
+        /// This method loads character data from a binary file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static bool LoadCharacterBinary(string path)
         {
             try
@@ -308,5 +334,31 @@ namespace ICE11A
 
             return options;
         }
+
+        /// <summary>
+        /// This method saves character data to a JSON file.
+        /// </summary>
+        /// <param name="path"></param>
+        public static void SaveCharacterJSON(string path)
+        {
+            CharacterData characterData;
+
+            characterData.AGL = Settings.Default.AGL ?? "";
+            characterData.STR = Settings.Default.STR ?? "";
+            characterData.VGR = Settings.Default.VGR ?? "";
+            characterData.PER = Settings.Default.PER ?? "";
+            characterData.INT = Settings.Default.INT ?? "";
+            characterData.WIL = Settings.Default.WIL ?? "";
+            characterData.CharacterName = Settings.Default.CharacterName ?? "";
+            characterData.Species = Settings.Default.Species ?? "";
+            characterData.Career = Settings.Default.Career ?? "";
+
+            // Serialize to JSON
+            string jsonData = JsonSerializer.Serialize(characterData, GetJsonOptions());
+
+            // Write to file
+            File.WriteAllText(path, jsonData);
+        }
+
     }
 }
